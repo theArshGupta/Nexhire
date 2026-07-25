@@ -6,15 +6,23 @@ import { sendOTP } from "../utils/mailer.js";
 const router = Router();
 
 function getBaseUrl(req: Request): string {
-  const configured = process.env.APP_URL?.replace(/\/$/, "");
-  if (configured) return configured;
-
   const forwardedProto = req.headers["x-forwarded-proto"];
   const protocol = typeof forwardedProto === "string"
     ? forwardedProto.split(",")[0].trim()
-    : req.protocol;
+    : (req.protocol || "https");
   const host = req.headers["x-forwarded-host"] || req.get("host");
-  return `${protocol}://${host}`;
+
+  // If request arrives from a production domain, dynamically use incoming host
+  if (host && !host.includes("localhost") && !host.includes("127.0.0.1")) {
+    return `${protocol}://${host}`;
+  }
+
+  const configured = process.env.APP_URL?.replace(/\/$/, "");
+  if (configured && !configured.includes("localhost")) {
+    return configured;
+  }
+
+  return `${protocol}://${host || "localhost:3000"}`;
 }
 
 // POST /api/auth/signup
