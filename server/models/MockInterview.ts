@@ -142,6 +142,7 @@ const ReportSchema = new Schema(
 
 const MockInterviewSchema: Schema = new Schema(
   {
+    _id: { type: String, required: true },
     userId: { type: String, required: true, index: true },
     role: { type: String, required: true },
     company: { type: String, required: true, default: "Tech Company" },

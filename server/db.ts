@@ -273,12 +273,16 @@ export class Database {
     }
 
     // 4. Seed initial Interview Sessions for demo user
-    const intCount = await MockInterviewModel.countDocuments();
-    if (intCount === 0) {
-      await MockInterviewModel.create([
-        { _id: "int_1", userId: "usr_demo123", role: "Software Engineer", company: "Google", difficulty: "Hard", report: { overallScore: 92, recruiterFeedback: "Excellent problem structure." }, createdAt: "2026-07-21T14:30:00Z", totalQuestions: 4, status: "completed" },
-        { _id: "int_2", userId: "usr_demo123", role: "Frontend Engineer", company: "Meta", difficulty: "Medium", report: { overallScore: 85, recruiterFeedback: "Strong system design understanding." }, createdAt: "2026-07-19T10:15:00Z", totalQuestions: 3, status: "completed" }
-      ]);
+    try {
+      const intCount = await MockInterviewModel.countDocuments();
+      if (intCount === 0) {
+        await MockInterviewModel.create([
+          { _id: "int_1", userId: "usr_demo123", role: "Software Engineer", company: "Google", difficulty: "Hard", report: { overallScore: 92, recruiterFeedback: "Excellent problem structure." }, createdAt: "2026-07-21T14:30:00Z", totalQuestions: 4, status: "completed" },
+          { _id: "int_2", userId: "usr_demo123", role: "Frontend Engineer", company: "Meta", difficulty: "Medium", report: { overallScore: 85, recruiterFeedback: "Strong system design understanding." }, createdAt: "2026-07-19T10:15:00Z", totalQuestions: 3, status: "completed" }
+        ]);
+      }
+    } catch (seedErr) {
+      console.warn("MockInterviewModel initial seed notice:", seedErr);
     }
   }
 
