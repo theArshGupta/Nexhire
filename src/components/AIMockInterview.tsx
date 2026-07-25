@@ -290,6 +290,20 @@ export default function AIMockInterview({ session }: AIMockInterviewProps) {
     fetchDatabaseHistory();
   }, [session.token]);
 
+  // Cleanup speech synthesis & audio recorder when leaving interview room
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+      if (mediaRecorderRef.current && mediaRecorderRef.current.state !== "inactive") {
+        try {
+          mediaRecorderRef.current.stop();
+        } catch (_) {}
+      }
+    };
+  }, [appState]);
+
   // Text-to-Speech (TTS) AI Voice Synthesizer
   const speakText = (text: string) => {
     if (isMuted || typeof window === "undefined" || !("speechSynthesis" in window)) return;
