@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Premium Enterprise Monochrome Design Tokens */
+  --color-canvas: #050505;
+  --color-surface-sec: #101010;
+  --color-card: #0B0B0B;
+  --color-card-elevated: #151515;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
+
+  --color-primary-white: #FFFFFF;
+  --color-secondary-gray: #B2B2B2;
+  --color-muted-gray: #777777;
+
+  --color-accent: #0066FF;
+
+  /* Custom timing for subtle transitions */
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  body {
+    background-color: #050505;
+    color: #FFFFFF;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    letter-spacing: -0.011em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.03em;
+  }
+}
+
+/* Palette Utility Classes */
+.bg-canvas {
+  background-color: #050505;
+}
+
+.bg-surface-sec {
+  background-color: #101010;
+}
+
+.bg-card {
+  background-color: #0B0B0B;
+}
+
+.bg-card-elevated {
+  background-color: #151515;
+}
+
+.border-subtle {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.text-primary-white {
+  color: #FFFFFF;
+}
+
+.text-secondary-gray {
+  color: #B2B2B2;
+}
+
+.text-muted-gray {
+  color: #777777;
+}
+
+/* Physical Minimalist Dark Cards */
+.card-premium {
+  background-color: #0B0B0B;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-premium:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  background-color: #101010;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.9);
+}
+
+/* Minimal Enterprise Buttons */
+.btn-primary-gradient {
+  background-color: #FFFFFF;
+  color: #050505;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.625rem 1.35rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid #FFFFFF;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
+}
+
+.btn-primary-gradient:hover {
+  background-color: #E5E5E5;
+  border-color: #E5E5E5;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary-matte {
+  background-color: #101010;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  font-weight: 500;
+  border-radius: 9999px;
+  padding: 0.625rem 1.25rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-secondary-matte:hover {
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.18);
+  background-color: #151515;
+}
+
+.btn-blue-framer {
+  background-color: #0066FF;
+  color: #FFFFFF;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 0.625rem 1.35rem;
+  transition: all 0.2s ease;
+  border: 1px solid #0066FF;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-blue-framer:hover {
+  background-color: #0052CC;
+  border-color: #0052CC;
+  transform: translateY(-1px);
+}
+
+/* Ambient Subtle Lighting Overlay */
+.ambient-lighting-spot {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(140px);
+  opacity: 0.08;
+}
+
+/* Premium scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
+

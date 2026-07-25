@@ -1,0 +1,6 @@
+{
+  "name": "NexHire",
+  "description": "AI-powered career platform helping students and graduates prepare for placements, resume building, DSA prep, and mock interviews.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
