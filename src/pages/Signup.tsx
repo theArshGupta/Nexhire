@@ -149,7 +149,7 @@ export default function Signup({ onNavigate, onSignupSubmit }: SignupProps) {
             <button
               type="button"
               id="signup-social-google"
-              onClick={() => onNavigate("google-auth")}
+              onClick={() => { window.location.href = "/api/auth/google"; }}
               className="w-full flex items-center justify-center gap-3 bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800/80 hover:border-zinc-700 rounded-xl px-4 py-3 transition-all duration-200 cursor-pointer text-xs font-semibold text-zinc-200 active:scale-[0.99]"
             >
               <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
@@ -176,7 +176,7 @@ export default function Signup({ onNavigate, onSignupSubmit }: SignupProps) {
             <button
               type="button"
               id="signup-social-github"
-              onClick={() => onNavigate("github-auth")}
+              onClick={() => { window.location.href = "/api/auth/github"; }}
               className="w-full flex items-center justify-center gap-3 bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800/80 hover:border-zinc-700 rounded-xl px-4 py-3 transition-all duration-200 cursor-pointer text-xs font-semibold text-zinc-200 active:scale-[0.99]"
             >
               <svg className="h-4 w-4 shrink-0 fill-current text-white" viewBox="0 0 24 24">
