@@ -5,10 +5,12 @@ import { authenticate, AuthRequest } from "../middleware/auth.js";
 const router = Router();
 
 // GET /api/user/profile
-router.get("/profile", authenticate, (req: Request, res: Response) => {
+router.get("/profile", authenticate, async (req: Request, res: Response) => {
   try {
     const authReq = req as AuthRequest;
-    res.json({ success: true, user: authReq.user });
+    const userId = authReq.user!.id;
+    const user = await db.getUserById(userId);
+    res.json({ success: true, user: user || authReq.user });
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to fetch user profile" });
   }

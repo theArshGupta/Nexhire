@@ -38,14 +38,14 @@ export default function Dashboard({ session, onSignOut }: DashboardProps) {
   const [resumeText, setResumeText] = useState(
     "Responsible for coding student registration portal. Handled backend server files. Fixed slow tables."
   );
-  const [resumeScore, setResumeScore] = useState(68);
+  const [resumeScore, setResumeScore] = useState(0);
   const [optimizerLoading, setOptimizerLoading] = useState(false);
   const [isOptimizerDone, setIsOptimizerDone] = useState(false);
   const [optimizedText, setOptimizedText] = useState("");
   const [resumeTips, setResumeTips] = useState<string[]>([]);
 
   // --- DSA compiler states ---
-  const [dsaScore, setDsaScore] = useState(132);
+  const [dsaScore, setDsaScore] = useState(0);
   const [selectedLanguage, setSelectedLanguage] = useState("cpp");
   const [dsaCode, setDsaCode] = useState(`bool isValidBST(TreeNode* root, TreeNode* minNode = nullptr, TreeNode* maxNode = nullptr) {
     if (!root) return true;
@@ -60,7 +60,7 @@ export default function Dashboard({ session, onSignOut }: DashboardProps) {
   // --- Mock Interview States ---
   const [isInterviewing, setIsInterviewing] = useState(false);
   const [interviewStep, setInterviewStep] = useState(0);
-  const [confidenceScore, setConfidenceScore] = useState(85);
+  const [confidenceScore, setConfidenceScore] = useState(0);
   const [voiceSpectrum, setVoiceSpectrum] = useState<number[]>(Array(15).fill(25));
   const [aiQuestion, setAiQuestion] = useState("Click 'Start Session' to begin the mock technical interview.");
   const [userSpeechLog, setUserSpeechLog] = useState("");
@@ -122,6 +122,34 @@ export default function Dashboard({ session, onSignOut }: DashboardProps) {
   useEffect(() => {
     fetchStats();
     fetchApplications();
+
+    // Fetch latest resume ATS score from DB
+    fetch("/api/resume/latest", {
+      headers: { Authorization: `Bearer ${session.token || ""}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.data && typeof data.data.atsScore === "number") {
+          setResumeScore(data.data.atsScore);
+        }
+      })
+      .catch(() => {});
+
+    // Fetch latest mock interview score from DB
+    fetch("/api/interview/history", {
+      headers: { Authorization: `Bearer ${session.token || ""}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.history && Array.isArray(data.history) && data.history.length > 0) {
+          const latest = data.history[0];
+          const score = latest.overallScore || latest.report?.overallScore || 0;
+          if (score > 0) {
+            setConfidenceScore(score);
+          }
+        }
+      })
+      .catch(() => {});
   }, [session.token]);
 
   // Periodic microphone waveform fluctuations

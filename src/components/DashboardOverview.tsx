@@ -90,78 +90,99 @@ export default function DashboardOverview({
           </div>
 
           {/* Quick Stats Grid */}
-          <div className="grid grid-cols-3 gap-4 w-full md:w-auto shrink-0 border-t md:border-t-0 md:border-l border-[rgba(255,255,255,0.08)] pt-6 md:pt-0 md:pl-8">
-            <div className="space-y-1.5">
-              <span className="text-xs font-mono text-[#777777] font-medium uppercase block">Readiness %</span>
-              <div className="flex items-center gap-1.5">
-                <span className="font-heading font-black text-xl md:text-2xl text-white">89%</span>
-                <TrendingUp className="h-4 w-4 text-[#0066FF]" />
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <span className="text-xs font-mono text-[#777777] font-medium uppercase block">Weekly Goal</span>
-              <div className="flex items-center gap-1.5">
-                <span className="font-heading font-black text-xl md:text-2xl text-white">4 / 5</span>
-                <Check className="h-4 w-4 text-[#0066FF]" />
-              </div>
-            </div>
-            <div className="space-y-1.5">
-              <span className="text-xs font-mono text-[#777777] font-medium uppercase block">Today's XP</span>
-              <div className="flex items-center gap-1.5">
-                <span className="font-heading font-black text-xl md:text-2xl text-white">180</span>
-                <Zap className="h-4 w-4 text-[#0066FF]" />
-              </div>
-            </div>
-          </div>
+          {(() => {
+            const hasActivity = resumeScore > 0 || dsaScore > 0 || confidenceScore > 0;
+            const overallReadiness = hasActivity ? Math.min(Math.round((resumeScore * 0.4) + (confidenceScore * 0.4) + Math.min(dsaScore, 20)), 100) : 0;
+            const weeklyGoalMet = hasActivity ? Math.min(Math.round((dsaScore > 0 ? 1 : 0) + (resumeScore > 0 ? 2 : 0) + (confidenceScore > 0 ? 2 : 0)), 5) : 0;
+            const todayXp = dsaScore * 10;
+            const atsMatch = resumeScore;
+
+            return (
+              <>
+                <div className="grid grid-cols-3 gap-4 w-full md:w-auto shrink-0 border-t md:border-t-0 md:border-l border-[rgba(255,255,255,0.08)] pt-6 md:pt-0 md:pl-8">
+                  <div className="space-y-1.5">
+                    <span className="text-xs font-mono text-[#777777] font-medium uppercase block">Readiness %</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-heading font-black text-xl md:text-2xl text-white">{overallReadiness}%</span>
+                      <TrendingUp className="h-4 w-4 text-[#0066FF]" />
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <span className="text-xs font-mono text-[#777777] font-medium uppercase block">Weekly Goal</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-heading font-black text-xl md:text-2xl text-white">{weeklyGoalMet} / 5</span>
+                      <Check className="h-4 w-4 text-[#0066FF]" />
+                    </div>
+                  </div>
+                  <div className="space-y-1.5">
+                    <span className="text-xs font-mono text-[#777777] font-medium uppercase block">Today's XP</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-heading font-black text-xl md:text-2xl text-white">{todayXp}</span>
+                      <Zap className="h-4 w-4 text-[#0066FF]" />
+                    </div>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
         </div>
 
         {/* Dynamic visual progress indicators */}
-        <div className="mt-8 pt-6 border-t border-[rgba(255,255,255,0.08)] grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Progress Circle 1 */}
-          <div className="flex items-center gap-4">
-            <div className="relative shrink-0 flex items-center justify-center">
-              <svg className="h-12 w-12 transform -rotate-90">
-                <circle cx="24" cy="24" r="20" stroke="#1f1f1f" strokeWidth="4" fill="transparent" />
-                <circle cx="24" cy="24" r="20" stroke="#0066FF" strokeWidth="4" fill="transparent" strokeDasharray={125.6} strokeDashoffset={125.6 * (1 - 0.89)} strokeLinecap="round" />
-              </svg>
-              <span className="absolute text-xs font-bold font-mono text-white">89%</span>
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white">Interview Readiness</p>
-              <p className="text-xs text-[#B2B2B2] font-normal mt-0.5">Scored across ATS, DSA and Communication</p>
-            </div>
-          </div>
+        {(() => {
+          const hasActivity = resumeScore > 0 || dsaScore > 0 || confidenceScore > 0;
+          const overallReadiness = hasActivity ? Math.min(Math.round((resumeScore * 0.4) + (confidenceScore * 0.4) + Math.min(dsaScore, 20)), 100) : 0;
+          const targetPct = hasActivity ? Math.min(Math.round((dsaScore / 50) * 100), 100) : 0;
+          const atsPct = resumeScore;
 
-          {/* Progress Circle 2 */}
-          <div className="flex items-center gap-4">
-            <div className="relative shrink-0 flex items-center justify-center">
-              <svg className="h-12 w-12 transform -rotate-90">
-                <circle cx="24" cy="24" r="20" stroke="#1f1f1f" strokeWidth="4" fill="transparent" />
-                <circle cx="24" cy="24" r="20" stroke="#0066FF" strokeWidth="4" fill="transparent" strokeDasharray={125.6} strokeDashoffset={125.6 * (1 - 0.8)} strokeLinecap="round" />
-              </svg>
-              <span className="absolute text-xs font-bold font-mono text-white">80%</span>
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white">Weekly Targets Met</p>
-              <p className="text-xs text-[#B2B2B2] font-normal mt-0.5">80% of weekly coding targets cleared</p>
-            </div>
-          </div>
+          return (
+            <div className="mt-8 pt-6 border-t border-[rgba(255,255,255,0.08)] grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Progress Circle 1 */}
+              <div className="flex items-center gap-4">
+                <div className="relative shrink-0 flex items-center justify-center">
+                  <svg className="h-12 w-12 transform -rotate-90">
+                    <circle cx="24" cy="24" r="20" stroke="#1f1f1f" strokeWidth="4" fill="transparent" />
+                    <circle cx="24" cy="24" r="20" stroke="#0066FF" strokeWidth="4" fill="transparent" strokeDasharray={125.6} strokeDashoffset={125.6 * (1 - (overallReadiness / 100))} strokeLinecap="round" />
+                  </svg>
+                  <span className="absolute text-xs font-bold font-mono text-white">{overallReadiness}%</span>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">Interview Readiness</p>
+                  <p className="text-xs text-[#B2B2B2] font-normal mt-0.5">Scored across ATS, DSA and Communication</p>
+                </div>
+              </div>
 
-          {/* Progress Circle 3 */}
-          <div className="flex items-center gap-4">
-            <div className="relative shrink-0 flex items-center justify-center">
-              <svg className="h-12 w-12 transform -rotate-90">
-                <circle cx="24" cy="24" r="20" stroke="#1f1f1f" strokeWidth="4" fill="transparent" />
-                <circle cx="24" cy="24" r="20" stroke="#0066FF" strokeWidth="4" fill="transparent" strokeDasharray={125.6} strokeDashoffset={125.6 * (1 - 0.7)} strokeLinecap="round" />
-              </svg>
-              <span className="absolute text-xs font-bold font-mono text-white">70%</span>
+              {/* Progress Circle 2 */}
+              <div className="flex items-center gap-4">
+                <div className="relative shrink-0 flex items-center justify-center">
+                  <svg className="h-12 w-12 transform -rotate-90">
+                    <circle cx="24" cy="24" r="20" stroke="#1f1f1f" strokeWidth="4" fill="transparent" />
+                    <circle cx="24" cy="24" r="20" stroke="#0066FF" strokeWidth="4" fill="transparent" strokeDasharray={125.6} strokeDashoffset={125.6 * (1 - (targetPct / 100))} strokeLinecap="round" />
+                  </svg>
+                  <span className="absolute text-xs font-bold font-mono text-white">{targetPct}%</span>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">Weekly Targets Met</p>
+                  <p className="text-xs text-[#B2B2B2] font-normal mt-0.5">{targetPct}% of weekly coding targets cleared</p>
+                </div>
+              </div>
+
+              {/* Progress Circle 3 */}
+              <div className="flex items-center gap-4">
+                <div className="relative shrink-0 flex items-center justify-center">
+                  <svg className="h-12 w-12 transform -rotate-90">
+                    <circle cx="24" cy="24" r="20" stroke="#1f1f1f" strokeWidth="4" fill="transparent" />
+                    <circle cx="24" cy="24" r="20" stroke="#0066FF" strokeWidth="4" fill="transparent" strokeDasharray={125.6} strokeDashoffset={125.6 * (1 - (atsPct / 100))} strokeLinecap="round" />
+                  </svg>
+                  <span className="absolute text-xs font-bold font-mono text-white">{atsPct}%</span>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">ATS Improvements</p>
+                  <p className="text-xs text-[#B2B2B2] font-normal mt-0.5">Resume metrics alignment matched</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-bold text-white">ATS Improvements</p>
-              <p className="text-xs text-[#B2B2B2] font-normal mt-0.5">Resume metrics alignment matched</p>
-            </div>
-          </div>
-        </div>
+          );
+        })()}
       </div>
 
       {/* 2. CENTERPIECE AI CAREER COACH */}
@@ -225,25 +246,25 @@ export default function DashboardOverview({
                 </div>
               </div>
               <div className="h-10 w-10 rounded-full bg-[#101010] border border-[rgba(255,255,255,0.08)] flex items-center justify-center text-sm font-black font-heading text-white">
-                {resumeScore}%
+                {resumeScore > 0 ? `${resumeScore}%` : "0%"}
               </div>
             </div>
 
             <div className="space-y-2 bg-[#101010] border border-[rgba(255,255,255,0.08)] rounded-2xl p-4">
               <div className="flex justify-between text-xs">
                 <span className="text-[#B2B2B2] font-normal">Structure Validation:</span>
-                <span className="text-white font-medium font-mono">Passed ✓</span>
+                <span className="text-white font-medium font-mono">{resumeScore > 0 ? "Passed ✓" : "Pending Evaluation"}</span>
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-[#B2B2B2] font-normal">Quantifiable Impact:</span>
                 <span className="text-white font-mono">
-                  {resumeScore > 75 ? "Excellent (92%)" : "Low (68%)"}
+                  {resumeScore === 0 ? "Not Analyzed (0%)" : resumeScore > 75 ? `Excellent (${resumeScore}%)` : `Needs Improvement (${resumeScore}%)`}
                 </span>
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-[#B2B2B2] font-normal">STAR Metrics Rating:</span>
                 <span className="text-white font-mono">
-                  {resumeScore > 75 ? "Optimal" : "Sub-optimal"}
+                  {resumeScore === 0 ? "Not Evaluated" : resumeScore > 75 ? "Optimal" : "Sub-optimal"}
                 </span>
               </div>
             </div>
@@ -251,7 +272,7 @@ export default function DashboardOverview({
 
           <div className="pt-6 flex justify-between items-center border-t border-[rgba(255,255,255,0.08)] mt-4">
             <span className="text-xs text-[#777777] italic font-normal">
-              {resumeScore > 75 ? "Resume aligned for ATS screening." : "Optimize bullets to increase matching."}
+              {resumeScore === 0 ? "Upload your resume to calculate ATS score." : resumeScore > 75 ? "Resume aligned for ATS screening." : "Optimize bullets to increase matching."}
             </span>
             <button
               onClick={() => onNavigateTab("resume")}
@@ -278,18 +299,18 @@ export default function DashboardOverview({
               </div>
               <div className="flex items-center gap-1 bg-[#141414] border border-[rgba(255,255,255,0.08)] px-2.5 py-1 rounded text-xs font-mono font-bold text-white">
                 <Flame className="h-3.5 w-3.5 text-[#0066FF]" />
-                <span>8 DAY STREAK</span>
+                <span>{dsaScore > 0 ? "8 DAY STREAK" : "0 DAY STREAK"}</span>
               </div>
             </div>
 
             {/* Mini coding metric graph */}
             <div className="p-4 bg-[#101010] border border-[rgba(255,255,255,0.08)] rounded-2xl flex items-end justify-between h-20 gap-2">
-              {[35, 48, 40, 60, 52, 70, 85].map((val, idx) => (
+              {[dsaScore > 0 ? 35 : 0, dsaScore > 0 ? 48 : 0, dsaScore > 0 ? 40 : 0, dsaScore > 0 ? 60 : 0, dsaScore > 0 ? 52 : 0, dsaScore > 0 ? 70 : 0, dsaScore > 0 ? 85 : 0].map((val, idx) => (
                 <div key={idx} className="flex-1 flex flex-col items-center gap-1.5">
                   <div
                     style={{ height: `${val}%` }}
                     className={`w-full rounded-t-sm transition-all duration-300 ${
-                      idx === 6 ? "bg-[#0066FF]" : "bg-[#1A1A1A]"
+                      val > 0 && idx === 6 ? "bg-[#0066FF]" : "bg-[#1A1A1A]"
                     }`}
                   ></div>
                   <span className="text-[10px] font-mono text-[#777777] font-medium">{["M", "T", "W", "T", "F", "S", "S"][idx]}</span>
@@ -327,18 +348,22 @@ export default function DashboardOverview({
               </div>
               <div className="flex items-center gap-1.5">
                 <Star className="h-4 w-4 text-[#0066FF] fill-current" />
-                <span className="text-sm font-bold text-white">{confidenceScore}% score</span>
+                <span className="text-sm font-bold text-white">{confidenceScore > 0 ? `${confidenceScore}% score` : "0% score"}</span>
               </div>
             </div>
 
             <div className="bg-[#101010] border border-[rgba(255,255,255,0.08)] rounded-2xl p-4 flex items-center justify-between gap-4">
               <div className="space-y-1.5">
-                <p className="text-sm font-bold text-white">Stripe Systems On-site Preparation</p>
-                <p className="text-xs text-[#B2B2B2] leading-normal font-normal">Recommended focus: Horizontally partitioned publisher networks</p>
+                <p className="text-sm font-bold text-white">
+                  {confidenceScore > 0 ? "Technical Role Preparation" : "No Mock Interview Completed Yet"}
+                </p>
+                <p className="text-xs text-[#B2B2B2] leading-normal font-normal">
+                  {confidenceScore > 0 ? "Recommended focus: System design & vocal fluency" : "Start your first AI mock interview to evaluate your readiness."}
+                </p>
               </div>
               <div className="shrink-0 flex items-center gap-1 h-8">
                 {[15, 30, 20, 45, 25, 40, 15].map((h, i) => (
-                  <div key={i} style={{ height: `${h}px` }} className="w-0.5 bg-[#0066FF] rounded-full"></div>
+                  <div key={i} style={{ height: `${confidenceScore > 0 ? h : 4}px` }} className={`w-0.5 ${confidenceScore > 0 ? "bg-[#0066FF]" : "bg-[#1A1A1A]"} rounded-full`}></div>
                 ))}
               </div>
             </div>
