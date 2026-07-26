@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { AuthRequest } from "../middleware/auth.js";
-import { InterviewService } from "../services/interviewService.js";
+import { AuthRequest } from "../middleware/auth";
+import { InterviewService } from "../services/interviewService";
 
 export class InterviewController {
   /** POST /api/interview/start */

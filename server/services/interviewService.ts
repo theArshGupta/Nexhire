@@ -1,5 +1,5 @@
-import { MockInterviewModel } from "../models/MockInterview.js";
-import { AIInterviewService } from "./aiInterviewService.js";
+import { MockInterviewModel } from "../models/MockInterview";
+import { AIInterviewService } from "./aiInterviewService";
 
 // In-memory cache when MongoDB is offline
 const inMemoryInterviews = new Map<string, any>();

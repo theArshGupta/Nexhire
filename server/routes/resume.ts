@@ -2,8 +2,8 @@ import { Router, Request, Response } from "express";
 import Groq from "groq-sdk";
 import mammoth from "mammoth";
 import * as pdfParsePkg from "pdf-parse";
-import { db } from "../db.js";
-import { authenticate, AuthRequest } from "../middleware/auth.js";
+import { db } from "../db";
+import { authenticate, AuthRequest } from "../middleware/auth";
 
 const router = Router();
 

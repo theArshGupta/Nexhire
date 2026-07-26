@@ -1,7 +1,8 @@
 import { Router, Request, Response } from "express";
 import { GoogleGenAI } from "@google/genai";
 import Groq from "groq-sdk";
-import { authenticate, AuthRequest } from "../middleware/auth.js";
+import { db } from "../db";
+import { authenticate, AuthRequest } from "../middleware/auth";
 
 const router = Router();
 

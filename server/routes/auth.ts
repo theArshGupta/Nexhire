@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
-import { db } from "../db.js";
-import { authenticate, AuthRequest } from "../middleware/auth.js";
-import { sendOTP } from "../utils/mailer.js";
+import { db } from "../db";
+import { authenticate, AuthRequest } from "../middleware/auth";
+import { sendOTP } from "../utils/mailer";
 
 const router = Router();
 

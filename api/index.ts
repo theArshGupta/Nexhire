@@ -1,12 +1,11 @@
-import "../server/loadEnv.js";
 import express from "express";
-import authRoutes from "../server/routes/auth.js";
-import resumeRoutes from "../server/routes/resume.js";
-import interviewRoutes from "../server/routes/interview.js";
-import mentorRoutes from "../server/routes/mentor.js";
-import dsaRoutes from "../server/routes/dsa.js";
-import jobsRoutes from "../server/routes/jobs.js";
-import userRoutes from "../server/routes/user.js";
+import authRoutes from "../server/routes/auth";
+import resumeRoutes from "../server/routes/resume";
+import interviewRoutes from "../server/routes/interview";
+import mentorRoutes from "../server/routes/mentor";
+import dsaRoutes from "../server/routes/dsa";
+import jobsRoutes from "../server/routes/jobs";
+import userRoutes from "../server/routes/user";
 
 const app = express();
 

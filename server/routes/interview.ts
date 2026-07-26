@@ -1,11 +1,11 @@
 import { Router, Request, Response } from "express";
-import { authenticate } from "../middleware/auth.js";
-import { InterviewController } from "../controllers/interviewController.js";
+import { authenticate } from "../middleware/auth";
+import { InterviewController } from "../controllers/interviewController";
 import { GoogleGenAI, Type } from "@google/genai";
 
 const router = Router();
 
-import { AIInterviewService } from "../services/aiInterviewService.js";
+import { AIInterviewService } from "../services/aiInterviewService";
 
 // --- NEW PRODUCTION NEXINTERVIEW PIPELINE ---
 router.post("/start", authenticate, InterviewController.startInterview);
