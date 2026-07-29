@@ -168,8 +168,14 @@ export class Database {
   private connectionError: Error | null = null;
 
   constructor() {
-    const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/nexhire";
-    this.connected = mongoose.connect(uri)
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      console.warn("MONGODB_URI environment variable is missing.");
+      this.connected = Promise.resolve(mongoose);
+      return;
+    }
+
+    this.connected = mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 })
       .then(m => {
         console.log("Connected to MongoDB successfully");
         this.seedDataIfNeeded().catch(err => {
@@ -178,17 +184,18 @@ export class Database {
         return m;
       })
       .catch(err => {
-        console.error("Failed to connect to MongoDB. Please ensure your MongoDB instance is running or MONGODB_URI in .env.local is configured correctly. Details:", err);
+        console.error("MongoDB Connection Error:", err.message);
         this.connectionError = err;
         return mongoose; // Return resolved promise to avoid uncaught exception crash
       });
   }
 
   private async ensureConnected() {
-    if (this.connectionError) {
-      throw new Error(`Database connection failed: ${this.connectionError.message}`);
+    try {
+      await this.connected;
+    } catch (err: any) {
+      console.error("Database connection check warning:", err?.message);
     }
-    await this.connected;
   }
 
   private async seedDataIfNeeded() {

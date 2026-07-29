@@ -39,4 +39,13 @@ app.use("/api/dsa", dsaRoutes);
 app.use("/api/jobs", jobsRoutes);
 app.use("/api/user", userRoutes);
 
+// Global Error Handler for Vercel Serverless Function
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error("Vercel Serverless Error:", err);
+  res.status(500).json({
+    success: false,
+    error: err?.message || "Internal Server Error in Serverless Function"
+  });
+});
+
 export default app;
